@@ -28,15 +28,18 @@
 <script>
 import "bootstrap/dist/css/bootstrap.min.css";
 import { isAtuhenticated } from "./helper";
+import { mapGetters, mapActions } from "vuex";
 const { user } = isAtuhenticated();
 export default {
   name: "Navbar",
   data() {
     return {
-      user
+      // user
     };
   },
   methods: {
+    ...mapGetters(["getUser"]),
+    ...mapActions(["updateUser", "setUser"]),
     logout() {
       return fetch("http://localhost:8000/logout", {
         method: "GET",
@@ -47,10 +50,24 @@ export default {
       })
         .then(response => response.json())
         .then(() => {
-          this.user = undefined;
+          this.updateUser(undefined);
           localStorage.removeItem("jwt");
         })
         .catch(error => console.log(error));
+    },
+    setuser() {
+      const user = isAtuhenticated();
+      if (user !== undefined && user !== false) {
+        return this.setUser(user);
+      }
+    }
+  },
+  created() {
+    this.setuser();
+  },
+  computed: {
+    user() {
+      return this.getUser();
     }
   }
 };

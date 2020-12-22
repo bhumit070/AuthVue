@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table">
+    <table class="table" id="myTable">
       <thead>
         <tr>
           <th scope="col">Name</th>
@@ -28,7 +28,6 @@
     </table>
   </div>
 </template>
-
 <script>
 import { isAtuhenticated } from "./helper";
 import VueSimpleAlert from "vue-simple-alert";
@@ -40,6 +39,10 @@ export default {
     };
   },
   created() {
+    const user = isAtuhenticated();
+    if (!user) {
+      return this.$router.push("/");
+    }
     this.getUsers();
   },
   methods: {
@@ -65,8 +68,7 @@ export default {
         return this.$fire({
           title: "Error",
           text: "Loggedin user can not be deleted",
-          type: "error",
-          timer: "1500"
+          type: "error"
         });
       }
       this.$confirm("Are you sure you want to delete the user").then(() => {

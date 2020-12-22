@@ -3,14 +3,17 @@
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
+import store from "./store";
 import VueSimpleAlert from "vue-simple-alert";
 Vue.use(VueSimpleAlert);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
+  store,
   el: "#app",
   router,
   components: { App },
-  template: "<App/>",
+  vuetify,
+  template: "<App/>"
 });

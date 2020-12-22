@@ -35,9 +35,9 @@
 <script>
 import "bootstrap/dist/css/bootstrap.min.css";
 import { authenticate, isAtuhenticated } from "./helper";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Login",
-  props: ["user"],
   data() {
     return {
       username: "bhumit070",
@@ -45,7 +45,15 @@ export default {
       msg: ""
     };
   },
+  computed: {
+    user() {
+      this.getUser();
+      console.log(user);
+    }
+  },
   methods: {
+    ...mapGetters(["getUser"]),
+    ...mapActions(["updateUser"]),
     handleSubmit(e) {
       e.preventDefault();
       this.msg = "LOADING";
@@ -66,6 +74,7 @@ export default {
           if (data.error) {
             return (this.msg = data.error);
           } else {
+            this.updateUser(data);
             authenticate(data, () => {
               (this.password = ""), (this.username = "");
             });
